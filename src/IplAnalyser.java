@@ -7,7 +7,7 @@ import java.util.*;
 public class IplAnalyser {
     public static void main(String[] args) throws IOException {
         List<String[]> matches= loadCsv("Data/matches.csv");
-        List<String[]> deliveries= loadCsv("Data/deliveries.csv");
+       List<String[]> deliveries= loadCsv("Data/deliveries.csv");
         System.out.println("\n1. Matches played per year:");
         matchesPlayedPerYear(matches);
         System.out.println("\n2. Matches won by each team:");
@@ -18,8 +18,40 @@ public class IplAnalyser {
         System.out.println("\n4 For the year 2015 get the top economical bowlers.");
         topEconomicalbowler(matches,deliveries);
 
-        System.out.println("\n5 13 player of the match in 2017. ");
+        System.out.println("\n5  player of the match in 2017. ");
         playerOfTheMatch(matches);
+
+        System.out.println("\n6 Top 5 batsman of the winning team. ");
+        topFiveBatsman(matches,deliveries);
+    }
+
+    private static void topFiveBatsman(List<String[]> matches, List<String[]> deliveries) {
+        Map<String,String> records=new HashMap<>();
+        for(String[] record:matches){
+            records.put(record[0],record[10]);
+        }
+        Map<String,Integer> topRuns=new HashMap<>();
+        for(String[] record:deliveries){
+            if(records.get(record[0]).equals(record[2]))
+            {
+                Integer totalRuns=Integer.parseInt(record[17]);
+                String player= record[6];
+                topRuns.put(player,topRuns.getOrDefault(player,0)+totalRuns);
+            }
+        }
+
+        List<Map.Entry<String,Integer>> topFiveBatsman=new ArrayList<>(topRuns.entrySet());
+        topFiveBatsman.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+        int count=0;
+        for(Map.Entry<String,Integer> entry:topFiveBatsman){
+            if(count==5)
+                break;
+            System.out.println(entry.getKey()+" "+entry.getValue());
+            count++;
+
+        }
+
+
     }
 
     private static void playerOfTheMatch(List<String[]> matches) {
