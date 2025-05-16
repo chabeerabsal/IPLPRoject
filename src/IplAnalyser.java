@@ -17,6 +17,30 @@ public class IplAnalyser {
 
         System.out.println("\n4 For the year 2015 get the top economical bowlers.");
         topEconomicalbowler(matches,deliveries);
+
+        System.out.println("\n5 13 player of the match in 2017. ");
+        playerOfTheMatch(matches);
+    }
+
+    private static void playerOfTheMatch(List<String[]> matches) {
+        Map<String,Integer> pom= new HashMap<>();
+        for (String[] match : matches) {
+            String year=match[1];
+            if(year.equals("2016"))
+            {
+                String player=match[13];
+                pom.put(player, pom.getOrDefault(player,0)+1);
+            }
+        }
+        List<Map.Entry<String,Integer>> list= new ArrayList<>(pom.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+        for (Map.Entry<String,Integer> entry : list) {
+            System.out.println(entry.getKey()+" "+entry.getValue());
+        }
+        list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+        for (Map.Entry<String,Integer> entry : list) {
+            System.out.println(entry.getKey()+" "+entry.getValue());
+        }
     }
 
     private static void topEconomicalbowler(List<String[]> matches, List<String[]> deliveries) {
